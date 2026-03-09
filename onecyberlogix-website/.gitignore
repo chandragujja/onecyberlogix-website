@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build
+.astro/
+dist/
+
+# Lock files
+# package-lock.json
+
+# OS
+.DS_Store
+
+# Keys
+yes
+yes.pub
+*.pem
