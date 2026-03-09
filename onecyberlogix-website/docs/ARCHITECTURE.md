@@ -220,13 +220,33 @@
 | Hosting | Vercel | ✅ (pending) |
 | CDN | Vercel Edge | ✅ (pending) |
 | SSL | Vercel (Let's Encrypt) | ✅ (pending) |
-| Domain | TBD | ⏳ |
+| Domain | onecyberlogix.com | ✅ Cloudflare |
 | CI/CD | Vercel Auto-Deploy | ✅ |
 | Linting | GitHub Actions | 🔲 (optional) |
 | Testing | GitHub Actions | 🔲 (optional) |
 
 ## Next Steps
 
-1. **Connect Domain** → Buy domain → Add to Vercel → Update DNS
-2. **Enable HTTPS** → Automatic with Vercel
-3. **Optional: Add GitHub Actions** → For lint/test before deploy
+### 1. Connect Domain to Vercel (with Cloudflare)
+
+**In Vercel:**
+1. Go to Project → Settings → Domains
+2. Enter `onecyberlogix.com`
+3. Vercel will give you a verification token
+
+**In Cloudflare:**
+1. Go to DNS settings for onecyberlogix.com
+2. Add a CNAME record:
+   - Type: CNAME
+   - Name: @ (or your domain)
+   - Value: `cname.vercel-dns.com`
+3. Or add A record for apex:
+   - Type: A
+   - Name: @
+   - Value: `76.76.21.21`
+
+**For HTTPS:**
+- Option A (Vercel handles): Keep Cloudflare DNS only, let Vercel handle SSL
+- Option B (Cloudflare full): Set Cloudflare SSL to "Full" mode
+
+### 2. Test
