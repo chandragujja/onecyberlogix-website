@@ -9,11 +9,15 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: {
       enabled: true
-    }
+    },
+    imageService: 'vercel'
   }),
   server: {
     headers: {
       'Access-Control-Allow-Origin': '*',
     }
+  },
+  security: {
+    checkOrigin: false
   }
 });
