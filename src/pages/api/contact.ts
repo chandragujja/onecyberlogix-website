@@ -1,5 +1,16 @@
 import nodemailer from 'nodemailer';
 
+export const OPTIONS = async () => {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    }
+  });
+};
+
 export const POST = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
   const name = formData.get('name') as string;
@@ -68,7 +79,10 @@ ${message}
     await transporter.sendMail(mailOptions);
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   } catch (error) {
     console.error('Email error:', error);
@@ -77,7 +91,10 @@ ${message}
       error: (error as Error).message 
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 };
