@@ -1,16 +1,15 @@
----
 import nodemailer from 'nodemailer';
 
-export const POST = async ({ request }) => {
-  const data = await request.formData();
-  const name = data.get('name');
-  const email = data.get('email');
-  const company = data.get('company');
-  const message = data.get('message');
+export const POST = async ({ request }: { request: Request }) => {
+  const formData = await request.formData();
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  const company = formData.get('company') as string;
+  const message = formData.get('message') as string;
 
   // Get SMTP config from environment variables
   const smtpHost = import.meta.env.SMTP_HOST || 'smtp.zoho.com';
-  const smtpPort = import.meta.env.SMTP_PORT || 587;
+  const smtpPort = import.meta.env.SMTP_PORT || '587';
   const smtpUser = import.meta.env.SMTP_USER || 'dummy@onecyberlogix.com';
   const smtpPass = import.meta.env.SMTP_PASS || 'your-app-password';
   const toEmail = import.meta.env.CONTACT_TO_EMAIL || 'dummy@onecyberlogix.com';
@@ -56,7 +55,7 @@ ${message}
     });
   } catch (error) {
     console.error('Email error:', error);
-    return new Response(JSON.stringify({ success: false, error: error.message }), {
+    return new Response(JSON.stringify({ success: false, error: (error as Error).message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
