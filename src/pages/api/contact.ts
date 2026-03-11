@@ -10,19 +10,36 @@ export const POST = async ({ request }: { request: Request }) => {
   // Get SMTP config from environment variables
   const smtpHost = import.meta.env.SMTP_HOST || 'smtp.zoho.com';
   const smtpPort = import.meta.env.SMTP_PORT || '587';
-  const smtpUser = import.meta.env.SMTP_USER || 'dummy@onecyberlogix.com';
-  const smtpPass = import.meta.env.SMTP_PASS || 'your-app-password';
-  const toEmail = import.meta.env.CONTACT_TO_EMAIL || 'dummy@onecyberlogix.com';
+  const smtpUser = import.meta.env.SMTP_USER || '';
+  const smtpPass = import.meta.env.SMTP_PASS || '';
+  const toEmail = import.meta.env.CONTACT_TO_EMAIL || '';
+
+  // Check if credentials are set
+  if (!smtpUser || !smtpPass || !toEmail) {
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: 'SMTP not configured. Please add SMTP credentials to environment variables.' 
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // Determine if we should use SSL (port 465) or TLS (port 587)
+  const useSSL = smtpPort === '465';
 
   // Create transporter
   const transporter = nodemailer.createTransport({
     host: smtpHost,
     port: parseInt(smtpPort),
-    secure: false,
+    secure: useSSL,
     auth: {
       user: smtpUser,
       pass: smtpPass,
     },
+    tls: useSSL ? undefined : {
+      rejectUnauthorized: false
+    }
   });
 
   const mailOptions = {
@@ -55,7 +72,10 @@ ${message}
     });
   } catch (error) {
     console.error('Email error:', error);
-    return new Response(JSON.stringify({ success: false, error: (error as Error).message }), {
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: (error as Error).message 
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
