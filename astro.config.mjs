@@ -6,5 +6,14 @@ export default defineConfig({
   integrations: [tailwind()],
   site: 'https://onecyberlogix.com',
   output: 'server',
-  adapter: vercel()
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true
+    }
+  }),
+  server: {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    }
+  }
 });
