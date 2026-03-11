@@ -19,8 +19,8 @@ export const POST = async ({ request }: { request: Request }) => {
   const message = formData.get('message') as string;
 
   // Get SMTP config from environment variables
-  const smtpHost = import.meta.env.SMTP_HOST || 'smtp.zoho.com';
-  const smtpPort = import.meta.env.SMTP_PORT || '587';
+  const smtpHost = import.meta.env.SMTP_HOST || '';
+  const smtpPort = import.meta.env.SMTP_PORT || '';
   const smtpUser = import.meta.env.SMTP_USER || '';
   const smtpPass = import.meta.env.SMTP_PASS || '';
   const toEmail = import.meta.env.CONTACT_TO_EMAIL || '';
