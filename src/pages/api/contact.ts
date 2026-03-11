@@ -12,10 +12,6 @@ export const OPTIONS = async () => {
 };
 
 export const POST = async ({ request }: { request: Request }) => {
-  // Handle Vercel CSRF check
-  const origin = request.headers.get('origin') || '';
-  
-  const formData = await request.formData();
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
