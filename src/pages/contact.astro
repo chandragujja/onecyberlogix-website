@@ -17,26 +17,27 @@ const businessEmail = import.meta.env.PUBLIC_BUSINESS_EMAIL || '';
         <!-- Contact Form -->
         <div class="p-8 rounded-2xl bg-surface border border-border">
           <h2 class="font-heading font-semibold text-2xl mb-6">Send us a Message</h2>
-          <form class="space-y-6">
+          <form id="contact-form" class="space-y-6">
             <div>
               <label class="block text-sm font-medium mb-2">Name</label>
-              <input type="text" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="Your name" />
+              <input type="text" name="name" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="Your name" required />
             </div>
             <div>
               <label class="block text-sm font-medium mb-2">Email</label>
-              <input type="email" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="you@company.com" />
+              <input type="email" name="email" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="you@company.com" required />
             </div>
             <div>
               <label class="block text-sm font-medium mb-2">Company</label>
-              <input type="text" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="Your company" />
+              <input type="text" name="company" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="Your company" />
             </div>
             <div>
               <label class="block text-sm font-medium mb-2">Message</label>
-              <textarea rows="5" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="Tell us about your security needs..."></textarea>
+              <textarea name="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary focus:outline-none transition-colors" placeholder="Tell us about your security needs..." required></textarea>
             </div>
-            <button type="submit" class="w-full bg-primary text-background py-4 rounded-lg font-semibold hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all">
+            <button type="submit" id="submit-btn" class="w-full bg-primary text-background py-4 rounded-lg font-semibold hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all">
               Send Message
             </button>
+            <p id="form-status" class="text-center text-sm hidden"></p>
           </form>
         </div>
         
@@ -103,5 +104,44 @@ const businessEmail = import.meta.env.PUBLIC_BUSINESS_EMAIL || '';
       </div>
     </div>
   </section>
+  <script>
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusEl = document.getElementById('form-status');
+    
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      statusEl.classList.add('hidden');
+      
+      const formData = new FormData(form);
+      
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          statusEl.textContent = 'Message sent successfully! We\'ll get back to you soon.';
+          statusEl.className = 'text-center text-sm text-green-400 mt-4';
+          form.reset();
+        } else {
+          statusEl.textContent = 'Failed to send message. Please try again.';
+          statusEl.className = 'text-center text-sm text-red-400 mt-4';
+        }
+      } catch (error) {
+        statusEl.textContent = 'Error sending message. Please try again.';
+        statusEl.className = 'text-center text-sm text-red-400 mt-4';
+      }
+      
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+      statusEl.classList.remove('hidden');
+    });
+  </script>
 </Layout>
 
