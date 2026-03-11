@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const businessPhone = import.meta.env.PUBLIC_BUSINESS_PHONE || '';
+const businessEmail = import.meta.env.PUBLIC_BUSINESS_EMAIL || '';
 ---
 
 <Layout title="Contact">
@@ -54,7 +57,9 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div>
                   <div class="font-medium mb-1">Email</div>
-                  <a id="contact-email" href="#" class="text-muted hover:text-primary transition"></a>
+                  {businessEmail && (
+                    <a href={`mailto:${businessEmail}`} class="text-muted hover:text-primary transition">{businessEmail}</a>
+                  )}
                 </div>
               </div>
               
@@ -66,7 +71,9 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div>
                   <div class="font-medium mb-1">Phone</div>
-                  <a id="contact-phone" href="#" class="text-muted hover:text-primary transition"></a>
+                  {businessPhone && (
+                    <a href={`tel:${businessPhone.replace(/\D/g, '')}`} class="text-muted hover:text-primary transition">{businessPhone}</a>
+                  )}
                 </div>
               </div>
               
@@ -89,23 +96,11 @@ import Layout from '../layouts/Layout.astro';
           <div class="p-6 rounded-xl bg-secondary/10 border border-secondary/30">
             <div class="font-heading font-semibold text-lg mb-2">🚨 Security Emergency?</div>
             <p class="text-muted text-sm">
-              If you're experiencing a security incident, call our 24/7 emergency line: <span class="text-primary font-medium">TBD</span>
+              If you're experiencing a security incident, call our emergency line:  24/7<span class="text-primary font-medium">{businessPhone || 'TBD'}</span>
             </p>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <script>
-    const emailEl = document.getElementById('contact-email');
-    const phoneEl = document.getElementById('contact-phone');
-    if (window.BUSINESS_EMAIL && emailEl) {
-      emailEl.textContent = window.BUSINESS_EMAIL;
-      emailEl.href = 'mailto:' + window.BUSINESS_EMAIL;
-    }
-    if (window.BUSINESS_PHONE && phoneEl) {
-      phoneEl.textContent = window.BUSINESS_PHONE;
-      phoneEl.href = 'tel:' + window.BUSINESS_PHONE.replace(/\D/g, '');
-    }
-  </script>
 </Layout>
