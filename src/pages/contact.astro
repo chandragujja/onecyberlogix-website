@@ -54,7 +54,7 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div>
                   <div class="font-medium mb-1">Email</div>
-                  <div class="text-muted">contact@onecyberlogix.com</div>
+                  <a id="contact-email" href="#" class="text-muted hover:text-primary transition"></a>
                 </div>
               </div>
               
@@ -66,7 +66,7 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div>
                   <div class="font-medium mb-1">Phone</div>
-                  <div class="text-muted">+1(571)715-3552</div>
+                  <a id="contact-phone" href="#" class="text-muted hover:text-primary transition"></a>
                 </div>
               </div>
               
@@ -96,4 +96,16 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
   </section>
+  <script>
+    const emailEl = document.getElementById('contact-email');
+    const phoneEl = document.getElementById('contact-phone');
+    if (window.BUSINESS_EMAIL && emailEl) {
+      emailEl.textContent = window.BUSINESS_EMAIL;
+      emailEl.href = 'mailto:' + window.BUSINESS_EMAIL;
+    }
+    if (window.BUSINESS_PHONE && phoneEl) {
+      phoneEl.textContent = window.BUSINESS_PHONE;
+      phoneEl.href = 'tel:' + window.BUSINESS_PHONE.replace(/\D/g, '');
+    }
+  </script>
 </Layout>
