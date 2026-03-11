@@ -6,12 +6,16 @@ export const OPTIONS = async () => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Accept',
     }
   });
 };
 
 export const POST = async ({ request }: { request: Request }) => {
+  // Handle Vercel CSRF check
+  const origin = request.headers.get('origin') || '';
+  
+  const formData = await request.formData();
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;

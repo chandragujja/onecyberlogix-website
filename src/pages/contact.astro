@@ -120,7 +120,10 @@ const businessEmail = import.meta.env.PUBLIC_BUSINESS_EMAIL || '';
       try {
         const response = await fetch('/api/contact', {
           method: 'POST',
-          body: formData
+          body: formData,
+          headers: {
+            'Accept': 'application/json',
+          }
         });
         
         const result = await response.json();
