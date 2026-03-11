@@ -11,6 +11,9 @@ dist/
 # OS
 .DS_Store
 
+# Environment variables
+.env
+
 # Keys
 yes
 yes.pub

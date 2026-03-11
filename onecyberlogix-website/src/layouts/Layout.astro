@@ -5,6 +5,9 @@ interface Props {
 }
 
 const { title, description = "Agentic IAM Cybersecurity Services for the Modern Enterprise" } = Astro.props;
+
+const businessPhone = import.meta.env.PUBLIC_BUSINESS_PHONE || '';
+const businessEmail = import.meta.env.PUBLIC_BUSINESS_EMAIL || '';
 ---
 
 <!doctype html>
@@ -19,6 +22,10 @@ const { title, description = "Agentic IAM Cybersecurity Services for the Modern 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script is:inline>
+      window.BUSINESS_PHONE = {JSON.stringify(businessPhone)};
+      window.BUSINESS_EMAIL = {JSON.stringify(businessEmail)};
+    </script>
   </head>
   <body class="bg-dark-900 text-white font-sans antialiased">
     <slot />
