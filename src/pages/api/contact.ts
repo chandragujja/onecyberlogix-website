@@ -1,5 +1,15 @@
 import nodemailer from 'nodemailer';
 
+// Simple HTML escaping to prevent XSS
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export const OPTIONS = async () => {
   return new Response(null, {
     status: 204,
@@ -56,7 +66,7 @@ export const POST = async ({ request }: { request: Request }) => {
   const mailOptions = {
     from: smtpUser,
     to: toEmail,
-    subject: `New Contact Form Submission from ${name}`,
+    subject: `New Contact Form Submission from ${escapeHtml(name)}`,
     text: `
 Name: ${name}
 Email: ${email}
@@ -67,11 +77,11 @@ ${message}
     `,
     html: `
 <h2>New Contact Form Submission</h2>
-<p><strong>Name:</strong> ${name}</p>
-<p><strong>Email:</strong> ${email}</p>
-<p><strong>Company:</strong> ${company}</p>
+<p><strong>Name:</strong> ${escapeHtml(name)}</p>
+<p><strong>Email:</strong> ${escapeHtml(email)}</p>
+<p><strong>Company:</strong> ${escapeHtml(company)}</p>
 <p><strong>Message:</strong></p>
-<p>${message}</p>
+<p>${escapeHtml(message)}</p>
     `,
   };
 
